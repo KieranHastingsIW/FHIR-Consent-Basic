@@ -5,10 +5,8 @@ import ca.uhn.fhir.rest.server.RestfulServer;
 import ca.uhn.fhir.rest.server.interceptor.LoggingInterceptor;
 import ca.uhn.fhir.rest.server.interceptor.ResponseHighlighterInterceptor;
 import ca.uhn.fhir.rest.server.interceptor.consent.ConsentInterceptor;
-import ca.uhn.fhir.rest.server.interceptor.consent.IConsentService;
 import ca.uhn.fhir.rest.server.provider.HashMapResourceProvider;
-import ca.uhn.fhir.letsbuild.security.MyConsentInterceptor;
-import ca.uhn.fhir.letsbuild.security.LetsBuildAuthorizationInterceptor;
+import ca.uhn.fhir.letsbuild.security.MyConsentService;
 import ca.uhn.fhir.test.utilities.JettyUtil;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -42,7 +40,7 @@ public class RunServer {
 		// On day 2 we will register an authorization interceptor here
 
 
-		server.registerInterceptor(new ConsentInterceptor(new MyConsentInterceptor()));
+		server.registerInterceptor(new ConsentInterceptor(new MyConsentService()));
 
 		/*
 		 * The following is all boilerplate in order to start the HAPI FHIR
