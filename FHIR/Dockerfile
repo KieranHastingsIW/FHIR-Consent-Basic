@@ -1,9 +1,8 @@
-FROM maven:3.8.6-eclipse-temurin-17
-WORKDIR /app
- 
+FROM maven:3.8.6-eclipse-temurin-17 as build
 
-COPY pom.xml ./
- 
-COPY src ./src
- 
+COPY pom.xml .
+
+RUN mvn dependency:go-offline
+
+COPY src/ src/
 CMD ["mvn", "jetty:run"]
