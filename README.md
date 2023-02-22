@@ -1,17 +1,14 @@
-# Basic HAPI FHIR server with a simple Consent Interceptor implementation 
+# FHIR CONSNET INTERCEPTOR ON HAPI-FHIR-JPA-STARTER WITH POSTGRES-DB
 
-Requirerments
-    - Maven 3.8.6
-    - Java 17 or later
-    - Postman
+Requirements 
+  - locally hosted version of POSTGRES
+  - Maven
 
-* Clone this repo to the directory of your choice
-* cd into the chosen directory and run `mvn exec:java -Dexec.mainClass="ca.uhn.fhir.letsbuild.server.RunServer"`in your terminal of choice.
-* Use the `FHIR-Consent.postman_collection.json` in postman to POST, then GET consent object
-* The response status from the POST method should be 201 created and the body should be the consnet resource type that was sent in the body with a new ID
-* The response status from the GET method should be 200 OK and the body should be of the consent with the ID that was stated in the request parameter following Consent. 
-* In the terminal you are running the FHIR server on you should see the responses METHOD NAME: startOperation, PATIENT ID AND DISPLAY{"reference":"Patient/1","display":"P. van de Heuvel"}, and METHOD NAME: willSeeResource.
-
-More extensive versions of FHIR have validation on posting consent objects that reference patients that do not exist but this one does not, also the way I have done the FHIR to string to json conversion is probably very inefficient while also using another fhir context object, I think there will be a much better way of doing this. 
-
-
+* Using the PSQL CLI Create Postgres database, take note of the name you call it.
+* Connect the application to your database
+  - Drill down into {Working DIR}\src\main\resources\application.yaml
+  - add username password and DB name to the ENV variables in spring: dataSource: found on line 17
+* In a Terminal of your choosing cd into this project and RUN `mvn jetty:run`
+* Once FHIR is running using the browser of your choice look up `localhost:8080`, this will direct you to the FHIR GUI where you can add, search, update ,ect your resources.
+* at the bottom of the home page you will see a text box that will accept bundles, with a transaction button to the left. paste any one of the bundles from the ResourceExample folder found in this repository and click transaction. 
+* You should now have a handful of resource in your FHIR server that will be stored in your database, using the search functionality found by clicking on the resource you want to search by you should now be able to view all resources except those of type observability that are of observation type "Laboratory"

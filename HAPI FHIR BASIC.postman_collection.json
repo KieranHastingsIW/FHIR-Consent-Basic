@@ -1,0 +1,120 @@
+{
+	"info": {
+		"_postman_id": "821a2235-620e-4845-b2cf-08382462a4a9",
+		"name": "HAPI FHIR BASIC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22605599"
+	},
+	"item": [
+		{
+			"name": "GET CONSENT BY ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/Consent/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"Consent",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST CONSENT",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"resourceType\": \"Consent\",\r\n  \"id\": \"consent-example-basic\",\r\n  \"text\": {\r\n    \"status\": \"generated\",\r\n    \"div\": \"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\">\\n\\t\\t\\t<p>\\n\\tAuthorize Normal access for Treatment\\n\\t\\t\\t</p>\\n\\t\\t\\t<p>\\n    Patient &quot;P. van de Heuvel&quot; wishes to have all of the PHI collected at the Good Health Psychiatric Hospital \\n   available for normal treatment use.\\n\\t\\t\\t</p>\\n\\t\\t</div>\"\r\n  },\r\n  \"status\": \"active\",\r\n  \"scope\": {\r\n    \"coding\": [\r\n      {\r\n        \"system\": \"http://terminology.hl7.org/CodeSystem/consentscope\",\r\n        \"code\": \"patient-privacy\"\r\n      }\r\n    ]\r\n  },\r\n  \"category\": [\r\n    {\r\n      \"coding\": [\r\n        {\r\n          \"system\": \"http://loinc.org\",\r\n          \"code\": \"59284-0\"\r\n        }\r\n      ]\r\n    }\r\n  ],\r\n  \"patient\": {\r\n    \"reference\": \"Patient/1\",\r\n    \"display\": \"P. van de Heuvel\"\r\n  },\r\n  \"dateTime\": \"2016-05-11\",\r\n  \"organization\": [\r\n    {\r\n      \"reference\": \"Organization/f001\"\r\n    }\r\n  ],\r\n  \"sourceAttachment\": {\r\n    \"title\": \"The terms of the consent in lawyer speak.\"\r\n  },\r\n  \"policyRule\": {\r\n    \"coding\": [\r\n      {\r\n        \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\",\r\n        \"code\": \"OPTIN\"\r\n      }\r\n    ]\r\n  },\r\n  \"provision\": {\r\n    \"period\": {\r\n      \"start\": \"1964-01-01\",\r\n      \"end\": \"2016-01-01\"\r\n    }\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/Consent",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"Consent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST PATIENT",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"resourceType\" : \"Patient\",\r\n  \"id\" : \"example\",\r\n  \"text\" : {\r\n    \"status\" : \"generated\",\r\n    \"div\" : \"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><p style=\\\"border: 1px #661aff solid; background-color: #e6e6ff; padding: 10px;\\\"><b>Jim </b> male, DoB: 1974-12-25 ( Medical record number: 12345 (use: USUAL, period: 2001-05-06 --&gt; (ongoing)))</p><hr/><table class=\\\"grid\\\"><tr><td style=\\\"background-color: #f3f5da\\\" title=\\\"Record is active\\\">Active:</td><td>true</td><td style=\\\"background-color: #f3f5da\\\" title=\\\"Known status of Patient\\\">Deceased:</td><td colspan=\\\"3\\\">false</td></tr><tr><td style=\\\"background-color: #f3f5da\\\" title=\\\"Alternate names (see the one above)\\\">Alt Names:</td><td colspan=\\\"3\\\"><ul><li>Peter James Chalmers (OFFICIAL)</li><li>Peter James Windsor (MAIDEN)</li></ul></td></tr><tr><td style=\\\"background-color: #f3f5da\\\" title=\\\"Ways to contact the Patient\\\">Contact Details:</td><td colspan=\\\"3\\\"><ul><li>-unknown-(HOME)</li><li>ph: (03) 5555 6473(WORK)</li><li>ph: (03) 3410 5613(MOBILE)</li><li>ph: (03) 5555 8834(OLD)</li><li>534 Erewhon St PeasantVille, Rainbow, Vic  3999(HOME)</li></ul></td></tr><tr><td style=\\\"background-color: #f3f5da\\\" title=\\\"Nominated Contact: Next-of-Kin\\\">Next-of-Kin:</td><td colspan=\\\"3\\\"><ul><li>Bénédicte du Marché  (female)</li><li>534 Erewhon St PleasantVille Vic 3999 (HOME)</li><li><a href=\\\"tel:+33(237)998327\\\">+33 (237) 998327</a></li><li>Valid Period: 2012 --&gt; (ongoing)</li></ul></td></tr><tr><td style=\\\"background-color: #f3f5da\\\" title=\\\"Patient Links\\\">Links:</td><td colspan=\\\"3\\\"><ul><li>Managing Organization: <a href=\\\"organization-example-gastro.html\\\">Organization/1</a> &quot;Gastroenterology&quot;</li></ul></td></tr></table></div>\"\r\n  },\r\n  \"identifier\" : [{\r\n    \"use\" : \"usual\",\r\n    \"type\" : {\r\n      \"coding\" : [{\r\n        \"system\" : \"http://terminology.hl7.org/CodeSystem/v2-0203\",\r\n        \"code\" : \"MR\"\r\n      }]\r\n    },\r\n    \"system\" : \"urn:oid:1.2.36.146.595.217.0.1\",\r\n    \"value\" : \"12345\",\r\n    \"period\" : {\r\n      \"start\" : \"2001-05-06\"\r\n    },\r\n    \"assigner\" : {\r\n      \"display\" : \"Acme Healthcare\"\r\n    }\r\n  }],\r\n  \"active\" : true,\r\n  \"name\" : [{\r\n    \"use\" : \"official\",\r\n    \"family\" : \"Chalmers\",\r\n    \"given\" : [\"Peter\",\r\n    \"James\"]\r\n  },\r\n  {\r\n    \"use\" : \"usual\",\r\n    \"given\" : [\"Jim\"]\r\n  },\r\n  {\r\n    \"use\" : \"maiden\",\r\n    \"family\" : \"Windsor\",\r\n    \"given\" : [\"Peter\",\r\n    \"James\"],\r\n    \"period\" : {\r\n      \"end\" : \"2002\"\r\n    }\r\n  }],\r\n  \"telecom\" : [{\r\n    \"use\" : \"home\"\r\n  },\r\n  {\r\n    \"system\" : \"phone\",\r\n    \"value\" : \"(03) 5555 6473\",\r\n    \"use\" : \"work\",\r\n    \"rank\" : 1\r\n  },\r\n  {\r\n    \"system\" : \"phone\",\r\n    \"value\" : \"(03) 3410 5613\",\r\n    \"use\" : \"mobile\",\r\n    \"rank\" : 2\r\n  },\r\n  {\r\n    \"system\" : \"phone\",\r\n    \"value\" : \"(03) 5555 8834\",\r\n    \"use\" : \"old\",\r\n    \"period\" : {\r\n      \"end\" : \"2014\"\r\n    }\r\n  }],\r\n  \"gender\" : \"male\",\r\n  \"birthDate\" : \"1974-12-25\",\r\n  \"_birthDate\" : {\r\n    \"extension\" : [{\r\n      \"url\" : \"http://hl7.org/fhir/StructureDefinition/patient-birthTime\",\r\n      \"valueDateTime\" : \"1974-12-25T14:35:45-05:00\"\r\n    }]\r\n  },\r\n  \"deceasedBoolean\" : false,\r\n  \"address\" : [{\r\n    \"use\" : \"home\",\r\n    \"type\" : \"both\",\r\n    \"text\" : \"534 Erewhon St PeasantVille, Rainbow, Vic  3999\",\r\n    \"line\" : [\"534 Erewhon St\"],\r\n    \"city\" : \"PleasantVille\",\r\n    \"district\" : \"Rainbow\",\r\n    \"state\" : \"Vic\",\r\n    \"postalCode\" : \"3999\",\r\n    \"period\" : {\r\n      \"start\" : \"1974-12-25\"\r\n    }\r\n  }],\r\n  \"contact\" : [{\r\n    \"relationship\" : [{\r\n      \"coding\" : [{\r\n        \"system\" : \"http://terminology.hl7.org/CodeSystem/v2-0131\",\r\n        \"code\" : \"N\"\r\n      }]\r\n    }],\r\n    \"name\" : {\r\n      \"family\" : \"du Marché\",\r\n      \"_family\" : {\r\n        \"extension\" : [{\r\n          \"url\" : \"http://hl7.org/fhir/StructureDefinition/humanname-own-prefix\",\r\n          \"valueString\" : \"VV\"\r\n        }]\r\n      },\r\n      \"given\" : [\"Bénédicte\"]\r\n    },\r\n    \"telecom\" : [{\r\n      \"system\" : \"phone\",\r\n      \"value\" : \"+33 (237) 998327\"\r\n    }],\r\n    \"address\" : {\r\n      \"use\" : \"home\",\r\n      \"type\" : \"both\",\r\n      \"line\" : [\"534 Erewhon St\"],\r\n      \"city\" : \"PleasantVille\",\r\n      \"district\" : \"Rainbow\",\r\n      \"state\" : \"Vic\",\r\n      \"postalCode\" : \"3999\",\r\n      \"period\" : {\r\n        \"start\" : \"1974-12-25\"\r\n      }\r\n    },\r\n    \"gender\" : \"female\",\r\n    \"period\" : {\r\n      \"start\" : \"2012\"\r\n    }\r\n  }],\r\n  \"managingOrganization\" : {\r\n    \"reference\" : \"Organization/1\"\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/Patient",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"Patient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET PATIENT",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/Patient/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"Patient",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OBSERVATION",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "BUNDLE TIME",
+			"request": {
+				"method": "POST",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
