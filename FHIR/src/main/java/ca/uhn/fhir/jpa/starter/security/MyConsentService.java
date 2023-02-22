@@ -43,24 +43,32 @@ public class MyConsentService implements IConsentService {
    */
    @Override
    public ConsentOutcome canSeeResource(RequestDetails theRequestDetails, IBaseResource theResource, IConsentContextServices theContextServices) {
+      System.out.println("METHOD NAME: canSeeResource");
       // In this basic example, we will filter out lab results so that they
       // are never disclosed to the user. A real interceptor might do something
       // more nuanced.
-
-
-      if (theResource instanceof Patient) {
-         Patient patient = (Patient)theResource;
-         HumanName humanName = patient.getNameFirstRep();
-         System.out.println("METHOD NAME: canSeeResource");
-         System.out.println(humanName.getGivenAsSingleString());
-         System.out.println(humanName.getFamily());
+      // Removes lab results from 
+      if (theResource instanceof Bundle) {
+         System.out.println("Instance of Bundle");
+         Bundle bundle = (Bundle)theResource;
+         List<BundleEntryComponent> componentsList = bundle.getEntry();
+         for (BundleEntryComponent component : componentsList){
+               if (component.getResource().getResourceType() == ResourceType.Observation ){
+                  Observation obs = (Observation)component.getResource();
+                  if (obs.getCategoryFirstRep().hasCoding("http://terminology.hl7.org/CodeSystem/observation-category", "laboratory")) {
+                     component.setResource(null);
+                  }
+               } 
+         }
       }
-      if (theResource instanceof Consent) {
-         Consent consent = (Consent) theResource;
-         String consentPatientId = consent.getPatient().getReferenceElement().getIdPart();
-         System.out.println("ID OF PATIENT WHOS CONSENT THIS IS " + consentPatientId);
+         if (theResource instanceof Observation) {
+            Observation obs = (Observation)theResource;
+            if (obs.getCategoryFirstRep().hasCoding("http://terminology.hl7.org/CodeSystem/observation-category", "laboratory")) {
+               return ConsentOutcome.REJECT;
+            }
+         }
 
-      }
+
       // Otherwise, allow the
       return ConsentOutcome.PROCEED;
    }
@@ -73,27 +81,7 @@ public class MyConsentService implements IConsentService {
    public ConsentOutcome willSeeResource(RequestDetails theRequestDetails, IBaseResource theResource, IConsentContextServices theContextServices) {
       // Don't return the subject for Observation resources
       System.out.println("METHOD NAME: willSeeResource");
-      // Removes lab results from 
-      if (theResource instanceof Bundle) {
-         System.out.println("Instance of Bundle");
-         Bundle bundle = (Bundle)theResource;
-         List<BundleEntryComponent> componentsList = bundle.getEntry();
-         for (BundleEntryComponent component : componentsList){
-               if (component.getResource().getResourceType() == ResourceType.Observation ){
-                  Observation obs = (Observation)component.getResource();
-                  if (obs.getCategoryFirstRep().hasCoding("http://terminology.hl7.org/CodeSystem/observation-category", "laboratory")) {
-                     component.setResource(null);
-                     return ConsentOutcome.REJECT;
-                  }
-               } 
-         }
-      }
-         if (theResource instanceof Observation) {
-            Observation obs = (Observation)theResource;
-            if (obs.getCategoryFirstRep().hasCoding("http://terminology.hl7.org/CodeSystem/observation-category", "laboratory")) {
-               return ConsentOutcome.REJECT;
-            }
-         }
+
       if (theResource instanceof Patient) {
         System.out.println("RESOURCE : Patient");
 
@@ -109,6 +97,19 @@ public class MyConsentService implements IConsentService {
         System.out.println("RESOURCE : Observation");
          Observation obs = (Observation)theResource;
          obs.setSubject(null);
+      }
+      if (theResource instanceof Patient) {
+         Patient patient = (Patient)theResource;
+         HumanName humanName = patient.getNameFirstRep();
+
+         System.out.println(humanName.getGivenAsSingleString());
+         System.out.println(humanName.getFamily());
+      }
+      if (theResource instanceof Consent) {
+         Consent consent = (Consent) theResource;
+         String consentPatientId = consent.getPatient().getReferenceElement().getIdPart();
+         System.out.println("ID OF PATIENT WHOS CONSENT THIS IS " + consentPatientId);
+
       }
       return ConsentOutcome.AUTHORIZED;
    }
