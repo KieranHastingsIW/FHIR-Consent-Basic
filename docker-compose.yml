@@ -24,7 +24,7 @@ services:
           - POSTGRES_USER=dbuser
           - POSTGRES_PASSWORD=dbuser
       volumes:
-        - "./init.sql:/tmp/init.sql"
+        # - "./init.sql:/tmp/init.sql"
         - "./database:/var/lib/postgresql/data"
 networks:
   default:
