@@ -12,6 +12,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.hl7.fhir.r4.model.Patient;
+import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Consent;
 
 import org.slf4j.Logger;
@@ -31,7 +32,11 @@ public class RunServer {
 		RestfulServer server = new RestfulServer(ourFhirContext);
 		server.registerProvider(new HashMapResourceProvider<>(ourFhirContext, Patient.class));
 		server.registerProvider(new HashMapResourceProvider<>(ourFhirContext, Consent.class));
+		server.registerProvider(new HashMapResourceProvider<>(ourFhirContext, Bundle.class));
+
 		server.registerProvider(new SearchableObservationHashMapResourceProvider(ourFhirContext));
+		// server.registerProvider(new SearchableConsentHashMapResourceProvider(ourFhirContext));
+
 
 		// Register some helpful interceptors
 		server.registerInterceptor(new ResponseHighlighterInterceptor());

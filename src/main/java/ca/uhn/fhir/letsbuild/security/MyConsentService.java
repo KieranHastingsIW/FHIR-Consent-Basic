@@ -1,5 +1,7 @@
 package ca.uhn.fhir.letsbuild.security;
 
+import java.util.List;
+
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Patient;
@@ -9,8 +11,9 @@ import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.parser.*;
 import org.json.*;
 
-
+import ca.uhn.fhir.letsbuild.server.SearchableConsentHashMapResourceProvider;
 import ca.uhn.fhir.rest.api.server.RequestDetails;
+import ca.uhn.fhir.rest.param.ReferenceParam;
 import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
 
 
@@ -42,16 +45,25 @@ public class MyConsentService implements IConsentService {
       // are never disclosed to the user. A real interceptor might do something
       // more nuanced.
 
-
+      if (theResource instanceof Observation) {
+         Observation obs = (Observation)theResource;
+         if (obs.getCategoryFirstRep().hasCoding("http://hl7.org/fhir/codesystem-observation-category.html", "laboratory")) {
+            return ConsentOutcome.REJECT;
+         }
+      }
       if (theResource instanceof Patient) {
          Patient patient = (Patient)theResource;
          HumanName humanName = patient.getNameFirstRep();
          System.out.println("METHOD NAME: canSeeResource");
          System.out.println(humanName.getGivenAsSingleString());
          System.out.println(humanName.getFamily());
+
       }
       if (theResource instanceof Consent) {
-         return ConsentOutcome.REJECT;
+         Consent consent = (Consent) theResource;
+         String consentPatientId = consent.getPatient().getReferenceElement().getIdPart();
+         System.out.println("ID OF PATIENT WHOS CONSENT THIS IS " + consentPatientId);
+         // return ConsentOutcome.REJECT;
          // FhirContext ctx = FhirContext.forR4();
          // IParser parser = ctx.newJsonParser();
          // Consent consent = (Consent)theResource;
@@ -96,6 +108,8 @@ public class MyConsentService implements IConsentService {
    public void completeOperationFailure(RequestDetails theRequestDetails, BaseServerResponseException theException, IConsentContextServices theContextServices) {
       // We could write an audit trail entry in here
    }
+
+
 }
 
 
