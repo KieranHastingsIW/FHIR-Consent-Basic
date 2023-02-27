@@ -1,27 +1,68 @@
-version: "3"
-services:
-  hapi-fhir-jpaserver-start:
-    build: . 
-    container_name: hapi-fhir-jpaserver-start 
-    environment:
-        - DATASOURCE_URL=jdbc:postgresql://hapi-fhir-postgres:5431/hapi    
-        - DATASOURCE_USERNAME=admin
-        - DATASOURCE_PASSWORD=dbuser
-        - JPA_HIBERNATE_DDL_AUTO=admin
+version: '3.9'
 
-    ports:
-      - "8080:8080"
-  hapi-fhir-postgres:
-    image: postgres:13-alpine
-    container_name: hapi-fhir-postgres
-    restart: always
-    environment:
-      POSTGRES_DB: "hapi"
-      POSTGRES_USER: "admin"
-      POSTGRES_PASSWORD: "admin"
-    volumes:
-      - hapi-fhir-postgres:/var/lib/postgresql/data
-    ports:
-      - 5341:5431
-volumes:
-  hapi-fhir-postgres:
+services:  
+  server:
+      container_name: fhir
+      depends_on:
+          - db
+      build:
+          context: FHIR
+          dockerfile: Dockerfile
+      image: fhir-container:latest
+      environment:
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/dbuser    
+        - SPRING_DATASOURCE_USERNAME=dbuser
+        - SPRING_DATASOURCE_PASSWORD=dbuser
+        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      ports:
+        - 8080:8080
+  db:
+      image: 'postgres:13.1-alpine'
+      container_name: db
+      environment:
+          - POSTGRES_USER=dbuser
+          - POSTGRES_PASSWORD=dbuser
+      volumes:
+        # - "./init.sql:/tmp/init.sql"
+        - "./database:/var/lib/postgresql/data"
+  
+  pgadmin:
+      container_name: pgadmin4_container
+      image: dpage/pgadmin4
+      environment:
+          - PGADMIN_DEFAULT_EMAIL=pgu@mail.com
+          - PGADMIN_DEFAULT_PASSWORD=pgp
+      ports:
+          - "5050:80"
+
+
+
+
+  guiserver:
+        container_name: guifhir
+        depends_on:
+            - guidb
+        build:
+            context: ConsentUI
+            dockerfile: Dockerfile
+        image: guifhir-container:latest
+        environment:
+          - SPRING_DATASOURCE_URL=jdbc:postgresql://guidb:5432/dbuser    
+          - SPRING_DATASOURCE_USERNAME=dbuser
+          - SPRING_DATASOURCE_PASSWORD=dbuser
+          - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+        ports:
+          - 9090:9090
+  guidb:
+      image: 'postgres:13.1-alpine'
+      container_name: guidb
+      environment:
+          - POSTGRES_USER=dbuser
+          - POSTGRES_PASSWORD=dbuser
+      volumes:
+        # - "./init.sql:/tmp/init.sql"
+        - "./guidatabase:/var/lib/postgresql/data"
+networks:
+  default:
+    name: kong-net
+

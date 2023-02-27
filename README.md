@@ -1,17 +1,25 @@
-# Basic HAPI FHIR server with a simple Consent Interceptor implementation 
+# FHIR CONSENT INTERCEPTOR ON HAPI-FHIR-JPA-STARTER WITH POSTGRES-DB
+## Requirements
+* Docker for Desktop
+## Build and Run FHIR Server
+* Using a DOS terminal direct yourself to this directory and run `docker-compose up --build`
+* Once FHIR is running using the browser of your choice look up localhost:8080, this will direct you to the FHIR GUI where you can add, search, update, ect your resources.
+* At the bottom of the home page, you will see a text box that will accept bundles, with a transaction button to the left. paste any one of the bundles from the ResourceExample folder found in this repository and click transaction.
+* You should now have a handful of resource in your FHIR server that will be stored in your database, using the search functionality found by clicking on the Observation tab located in the Left-hand side nav bar (Ordered alphabetically), you will now be able to search for observation resources but will not be permitted to see observations that are of observation-category 'laboratory'.
 
-Requirerments
-    - Maven 3.8.6
-    - Java 17 or later
-    - Postman
+## Consent Manager
+* Currently a stand alone MS with its own database, also built when running the above docker compose file.
+* In later state will be imbedded into the fhir server.
+* In current state runs on localhost:9090, if it does not run on first try select guifhir in docker desktop and run again.
+* In current state content from guifhir Consent manager does not affect what can be seen but some of the code that makes this happen can be seen in the consent interceptor class in the hap fhir server.
 
-* Clone this repo to the directory of your choice
-* cd into the chosen directory and run `mvn exec:java -Dexec.mainClass="ca.uhn.fhir.letsbuild.server.RunServer"`in your terminal of choice.
-* Use the `FHIR-Consent.postman_collection.json` in postman to POST, then GET consent object
-* The response status from the POST method should be 201 created and the body should be the consnet resource type that was sent in the body with a new ID
-* The response status from the GET method should be 200 OK and the body should be of the consent with the ID that was stated in the request parameter following Consent. 
-* In the terminal you are running the FHIR server on you should see the responses METHOD NAME: startOperation, PATIENT ID AND DISPLAY{"reference":"Patient/1","display":"P. van de Heuvel"}, and METHOD NAME: willSeeResource.
-
-More extensive versions of FHIR have validation on posting consent objects that reference patients that do not exist but this one does not, also the way I have done the FHIR to string to json conversion is probably very inefficient while also using another fhir context object, I think there will be a much better way of doing this. 
-
+## FHIR LEARNINGS
+### startOperation
+* Entry point of interceptor, all requests will trigger at the beginning.
+### canSeeResource
+* Method used to decide whether you see a resource at all.
+* should not modify appearance of resource, should be efficient seeing as it will run once for every resource requested in read or search.
+* If Searching for all observations the consent interceptor will call startOperation once, then call canSeeResource for each Observation that it finds,
+### willSeeResource
+* Method used to define how a resource will be displayed to you, will make modifications and remove information based on consent specification (when this part is implemented properly, currently is hard codded to remove gender)
 

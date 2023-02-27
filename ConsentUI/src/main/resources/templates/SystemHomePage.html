@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head> 
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<h1>Form</h1>
+            <form action="#" th:action="@{/addConsent}" th:object="${consent}" method="post">
+                <p>Patinet ID<input type="text" th:field="*{patientId}" /></p>
+                <p>Consent Type URL<input type="text" th:field="*{consentTypeUrl}" /></p>
+                <p>Consent Name<input type="text" th:field="*{consentName}" /></p>
+                <p>Give Consent<input type="checkbox" th:field="*{given}" /></p>
+                <p><input type="submit" value="Add Consent" /></p>
+            </form>
+   
+
+</body>
+</html>
