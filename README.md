@@ -11,7 +11,7 @@
 * Currently a stand alone MS with its own database, also built when running the above docker compose file.
 * In later state will be imbedded into the fhir server.
 * In current state runs on localhost:9090, if it does not run on first try select guifhir in docker desktop and run again.
-* In current state content from guifhir Consent manager does not affect what can be seen but some of the code that makes this happen can be seen in the consent interceptor class in the hap fhir server.
+* In current state content from guifhir Consent manager does not affect what can be seen but some of the code that makes this happen can be seen in the consent interceptor class in the hapi fhir server.
 
 ## FHIR LEARNINGS
 ### startOperation

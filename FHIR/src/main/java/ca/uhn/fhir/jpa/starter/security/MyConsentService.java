@@ -58,7 +58,7 @@ public class MyConsentService implements IConsentService {
       // ************************************************************************
          // UIAPI uiapi = new UIAPI();
          // if (theResource instanceof Observation) {
-         // Patient patient = ((Patient) theResource);
+         // Patient patient = ((Patient) theResource.getPatientIdPart()); ????????? 
          // // List<List<String>> consentList = uiapi.getPatientConsent(patient.getId()); }
          // if (theResource instanceof Patient) {
          //       Patient patient = ((Patient) theResource);
@@ -73,10 +73,12 @@ public class MyConsentService implements IConsentService {
          //       }
          //       } catch (Exception e){System.out.println("IOException");}
       // ************************************************************************
-            Observation obs = (Observation)theResource;
+      if (theResource instanceof Observation) {
+         Observation obs = (Observation)theResource;
             if (obs.getCategoryFirstRep().hasCoding("http://terminology.hl7.org/CodeSystem/observation-category", "laboratory")) {
                return ConsentOutcome.REJECT;
             }
+      }
       return ConsentOutcome.AUTHORIZED;
    }
 

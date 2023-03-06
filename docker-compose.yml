@@ -26,14 +26,14 @@ services:
         # - "./init.sql:/tmp/init.sql"
         - "./database:/var/lib/postgresql/data"
   
-  pgadmin:
-      container_name: pgadmin4_container
-      image: dpage/pgadmin4
-      environment:
-          - PGADMIN_DEFAULT_EMAIL=pgu@mail.com
-          - PGADMIN_DEFAULT_PASSWORD=pgp
-      ports:
-          - "5050:80"
+  # pgadmin:
+  #     container_name: pgadmin4_container
+  #     image: dpage/pgadmin4
+  #     environment:
+  #         - PGADMIN_DEFAULT_EMAIL=pgu@mail.com
+  #         - PGADMIN_DEFAULT_PASSWORD=pgp
+  #     ports:
+  #         - "5050:80"
 
 
 
