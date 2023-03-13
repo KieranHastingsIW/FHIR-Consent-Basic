@@ -14,7 +14,7 @@
 * In current state content from guifhir Consent manager does not affect what can be seen but some of the code that makes this happen can be seen in the consent interceptor class in the hapi fhir server.
 
 ## Diagram explaining how the resources are remved from the returned payload.
-![Diagram](https://github.com/KieranHastingsIW/FHIR-Consent-Basic/blob/main/FHIR%20Consent%20Interceptor%20.pdf)
+![Diagram](https://github.com/KieranHastingsIW/FHIR-Consent-Basic/blob/main/Diagram.png)
 
 
 ## FHIR LEARNINGS
